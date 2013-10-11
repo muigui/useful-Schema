@@ -1,0 +1,42 @@
+{
+	"author"          : {
+		"name"        : "constantology",
+		"email"       : "christos@muigui.com",
+		"url"         : "http://muigui.com"
+	},
+	"description"     : "useful schema for working with data sets",
+    "dependencies"    : {
+		"useful-copy"     : "latest",
+		"useful-date"     : "latest",
+		"useful-iter"     : "latest",
+		"useful-string"   : "latest",
+		"useful-type"     : "latest",
+		"useful-value"    : "latest"
+    },
+	"devDependencies" : {
+		"chai"                 : "latest",
+		"grunt"                : "latest",
+		"grunt-contrib-concat" : "latest",
+		"grunt-contrib-uglify" : "latest",
+		"grunt-contrib-watch"  : "latest",
+		"mocha"                : "latest"
+	},
+	"engines"         : {
+		"node"        : ">= 0.8.x"
+	},
+	"keywords"        : ["schema"],
+	"licenses"        : [ {
+		"type"        : "MIT",
+	     "url"        : "https://raw.github.com/muigui/useful-schema/master/LICENSE"
+	} ],
+	"main"            : "./index.js",
+	"name"            : "useful-schema",
+	"repository"      : {
+		"type"        : "git",
+		"url"         : "git@github.com:muigui/useful-schema.git"
+	},
+	"scripts"         : {
+		"test"        : "mocha -c --ignore-leaks -R spec -u tdd ./test/runner.js"
+	},
+	"version"         : "0.0.1"
+}

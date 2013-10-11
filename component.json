@@ -1,0 +1,27 @@
+{
+  "dependencies": {
+    "muigui/useful-copy": "latest",
+    "muigui/useful-date": "latest",
+    "muigui/useful-iter": "latest",
+    "muigui/useful-string": "latest",
+    "muigui/useful-type": "latest",
+    "muigui/useful-value": "latest"
+  },
+  "description": "useful schema for working with data sets",
+  "development": {
+    "chaijs/chai": "latest",
+    "visionmedia/mocha": "latest"
+  },
+  "keywords": [
+    "schema"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "name": "useful-Schema",
+  "remotes": [],
+  "repo": "muigui/useful-Schema",
+  "scripts": [
+    "index.js"
+  ],
+  "version": "0.0.1"
+}
