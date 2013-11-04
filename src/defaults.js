@@ -7,6 +7,9 @@
 	};
 
 	Schema.Date            = {
+		clone   : function( date ) {
+			return date.clone();
+		},
 		coerce  : function( date_str, format ) {
 			return Date.coerce( date_str, format );
 		},
@@ -44,7 +47,7 @@
 			return v;
 		},
 		date       : function( v, format ) {
-			var date = v,
+			var date = is_num( v ) ? new Date( v ) : v,
 				max  = +this.max,
 				min  = +this.min;
 
@@ -66,10 +69,10 @@
 			v = +date;
 
 			if ( min && is_num( min ) && v < min )
-				date = this.min.clone();
+				date = Schema.Date.clone( this.min );
 
 			if ( max && is_num( max ) && v > max )
-				date = this.max.clone();
+				date = Schema.Date.clone( this.max );
 
 			return date;
 		},
@@ -132,7 +135,9 @@
 			default : 'now',
 			format  : 'U',
 			toJSON  : function( v ) {
-				return Schema.Date.format( v, this.format );
+				return v instanceof Date
+					 ? Schema.Date.format( v, this.format )
+					 : v;
 			}
 		},
 		object      : {
@@ -146,4 +151,22 @@
 			min     : Number.NEGATIVE_INFINITY
 		},
 		string      : { default : '' }
+	};
+
+	Property.VALIDATION = {
+		array   : function( val ) {
+			return Object.prototype.toString.call( val ) === '[object Array]' && val.length;
+		},
+		boolean : function( val ) {
+			return typeof val === 'boolean';
+		},
+		date    : function( val ) {
+			return Object.prototype.toString.call( val ) === '[object Date]' && !isNaN( +val );
+		},
+		number  : function( val ) {
+			return typeof val === 'number' && !isNaN( val );
+		},
+		string  : function( val ) {
+			return typeof val === 'string';
+		}
 	};

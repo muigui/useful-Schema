@@ -15,13 +15,14 @@
 
 // instance configuration properties
 		cite            : null,
-		default         : null,
-		format          : null,
+//		default         : null,
+//		format          : null,
 		id              : null,
-		max             : null,
-		min             : null,
+//		max             : null,
+//		min             : null,
 		schema          : null,
 		store           : null,
+		strict          : true,
 		type            : 'object',
 
 // public properties
@@ -46,6 +47,9 @@
 		transform       : function( val, raw, data ) {
 			return val;
 		},
+		valid           : function( val ) {
+			return val !== null && val !== UNDEF;
+		},
 		value           : function( raw, data ) {
 			var val = this.transform( value( raw, this.cite ), raw, data );
 
@@ -54,7 +58,8 @@
 
 // internal methods
 		assign          : function( val, data ) {
-			value.assign( data, this.id, val );
+			if ( this.strict === true || this.valid( val ) )
+				value.assign( data, this.id, val );
 
 			return data;
 		},
@@ -73,7 +78,8 @@
 		},
 		initType        : function( type ) {
 			var DEFAULTS  = Property.TYPE_DEFAULTS,
-				DATA_TYPE = Property.DATA_TYPE;
+				DATA_TYPE = Property.DATA_TYPE,
+				VALID     = Property.VALIDATION;
 
 			if ( type ) {
 				switch ( typeof type ) {
@@ -83,8 +89,15 @@
 						if ( type in DATA_TYPE ) {
 							this.type = DATA_TYPE[type];
 
-							if ( type in DEFAULTS )
-								copy.merge( this, DEFAULTS[type] );
+							if ( type in DEFAULTS ) {
+								copy.update( this, DEFAULTS[type] );
+
+								if ( typeof DEFAULTS[type].toJSON === 'function' )
+									this.toJSON = DEFAULTS[type].toJSON;
+							}
+
+							if ( typeof VALID[type] === 'function' )
+								this.valid = VALID[type];
 						}
 
 						break;

@@ -171,6 +171,17 @@
 				total   : total
 			};
 		},
+		toJSON         : function( data ) {
+			var id, prop = this.property, val = {};
+
+			for ( id in prop ) {
+				if ( Object.prototype.hasOwnProperty.call( prop, id ) ) {
+					val[id] = prop[id].toJSON( data[id] );
+				}
+			}
+
+			return val;
+		},
 // internal methods
 		addProperty    : function( property ) {
 			if ( !property || typeof property !== 'object' )
@@ -226,13 +237,14 @@
 
 // instance configuration properties
 		cite            : null,
-		default         : null,
-		format          : null,
+//		default         : null,
+//		format          : null,
 		id              : null,
-		max             : null,
-		min             : null,
+//		max             : null,
+//		min             : null,
 		schema          : null,
 		store           : null,
+		strict          : true,
 		type            : 'object',
 
 // public properties
@@ -257,6 +269,9 @@
 		transform       : function( val, raw, data ) {
 			return val;
 		},
+		valid           : function( val ) {
+			return val !== null && val !== UNDEF;
+		},
 		value           : function( raw, data ) {
 			var val = this.transform( value( raw, this.cite ), raw, data );
 
@@ -265,7 +280,8 @@
 
 // internal methods
 		assign          : function( val, data ) {
-			value.assign( data, this.id, val );
+			if ( this.strict === true || this.valid( val ) )
+				value.assign( data, this.id, val );
 
 			return data;
 		},
@@ -284,7 +300,8 @@
 		},
 		initType        : function( type ) {
 			var DEFAULTS  = Property.TYPE_DEFAULTS,
-				DATA_TYPE = Property.DATA_TYPE;
+				DATA_TYPE = Property.DATA_TYPE,
+				VALID     = Property.VALIDATION;
 
 			if ( type ) {
 				switch ( typeof type ) {
@@ -294,8 +311,15 @@
 						if ( type in DATA_TYPE ) {
 							this.type = DATA_TYPE[type];
 
-							if ( type in DEFAULTS )
-								copy.merge( this, DEFAULTS[type] );
+							if ( type in DEFAULTS ) {
+								copy.update( this, DEFAULTS[type] );
+
+								if ( typeof DEFAULTS[type].toJSON === 'function' )
+									this.toJSON = DEFAULTS[type].toJSON;
+							}
+
+							if ( typeof VALID[type] === 'function' )
+								this.valid = VALID[type];
 						}
 
 						break;
@@ -321,6 +345,9 @@
 	};
 
 	Schema.Date            = {
+		clone   : function( date ) {
+			return date.clone();
+		},
 		coerce  : function( date_str, format ) {
 			return Date.coerce( date_str, format );
 		},
@@ -358,7 +385,7 @@
 			return v;
 		},
 		date       : function( v, format ) {
-			var date = v,
+			var date = is_num( v ) ? new Date( v ) : v,
 				max  = +this.max,
 				min  = +this.min;
 
@@ -380,10 +407,10 @@
 			v = +date;
 
 			if ( min && is_num( min ) && v < min )
-				date = this.min.clone();
+				date = Schema.Date.clone( this.min );
 
 			if ( max && is_num( max ) && v > max )
-				date = this.max.clone();
+				date = Schema.Date.clone( this.max );
 
 			return date;
 		},
@@ -446,7 +473,9 @@
 			default : 'now',
 			format  : 'U',
 			toJSON  : function( v ) {
-				return Schema.Date.format( v, this.format );
+				return v instanceof Date
+					 ? Schema.Date.format( v, this.format )
+					 : v;
 			}
 		},
 		object      : {
@@ -460,4 +489,22 @@
 			min     : Number.NEGATIVE_INFINITY
 		},
 		string      : { default : '' }
+	};
+
+	Property.VALIDATION = {
+		array   : function( val ) {
+			return Object.prototype.toString.call( val ) === '[object Array]' && val.length;
+		},
+		boolean : function( val ) {
+			return typeof val === 'boolean';
+		},
+		date    : function( val ) {
+			return Object.prototype.toString.call( val ) === '[object Date]' && !isNaN( +val );
+		},
+		number  : function( val ) {
+			return typeof val === 'number' && !isNaN( val );
+		},
+		string  : function( val ) {
+			return typeof val === 'string';
+		}
 	};

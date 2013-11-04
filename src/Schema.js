@@ -80,6 +80,17 @@
 				total   : total
 			};
 		},
+		toJSON         : function( data ) {
+			var id, prop = this.property, val = {};
+
+			for ( id in prop ) {
+				if ( Object.prototype.hasOwnProperty.call( prop, id ) ) {
+					val[id] = prop[id].toJSON( data[id] );
+				}
+			}
+
+			return val;
+		},
 // internal methods
 		addProperty    : function( property ) {
 			if ( !property || typeof property !== 'object' )
