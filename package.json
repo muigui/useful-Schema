@@ -6,20 +6,21 @@
 	},
 	"description"     : "useful schema for working with data sets",
     "dependencies"    : {
-		"useful-copy"     : "latest",
-		"useful-date"     : "latest",
-		"useful-iter"     : "latest",
-		"useful-string"   : "latest",
-		"useful-type"     : "latest",
-		"useful-value"    : "latest"
+    	"moment"          : "*",
+		"useful-copy"     : "*",
+		"useful-date"     : "*",
+		"useful-iter"     : "*",
+		"useful-string"   : "*",
+		"useful-type"     : "*",
+		"useful-value"    : "*"
     },
 	"devDependencies" : {
-		"chai"                 : "latest",
-		"grunt"                : "latest",
-		"grunt-contrib-concat" : "latest",
-		"grunt-contrib-uglify" : "latest",
-		"grunt-contrib-watch"  : "latest",
-		"mocha"                : "latest"
+		"chai"                 : "*",
+		"grunt"                : "*",
+		"grunt-contrib-concat" : "*",
+		"grunt-contrib-uglify" : "*",
+		"grunt-contrib-watch"  : "*",
+		"mocha"                : "*"
 	},
 	"engines"         : {
 		"node"        : ">= 0.8.x"
@@ -38,5 +39,5 @@
 	"scripts"         : {
 		"test"        : "mocha -c --ignore-leaks -R spec -u tdd ./test/runner.js"
 	},
-	"version"         : "0.0.2"
+	"version"         : "0.0.3"
 }

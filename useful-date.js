@@ -1,4 +1,6 @@
-	Schema.Date            = {
+	require( 'useful-date' );
+
+	module.exports = {
 		clone   : function( date ) {
 			return date.clone();
 		},
@@ -9,3 +11,4 @@
 			return date.format( format );
 		}
 	};
+

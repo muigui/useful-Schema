@@ -2,7 +2,7 @@ chai     = require( 'chai' );
 Schema   = require( '../index' );
 expect   = chai.expect;
 
-require( 'useful-date' );
+Schema.Date = require( '../useful-date' );
 require( 'useful-date/locale/en-GB.js' );
 
 require( './Schema.Property.test.js' );

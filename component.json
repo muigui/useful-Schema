@@ -1,11 +1,12 @@
 {
   "dependencies": {
-    "muigui/useful-copy": "latest",
+    "muigui/useful-copy": "*",
     "muigui/useful-date": "latest",
-    "muigui/useful-iter": "latest",
-    "muigui/useful-string": "latest",
-    "muigui/useful-type": "latest",
-    "muigui/useful-value": "latest"
+    "muigui/useful-iter": "*",
+    "muigui/useful-string": "*",
+    "muigui/useful-type": "*",
+    "muigui/useful-value": "*",
+    "moment/moment": "*"
   },
   "description": "useful schema for working with data sets",
   "development": {
@@ -21,7 +22,9 @@
   "remotes": [],
   "repo": "muigui/useful-Schema",
   "scripts": [
-    "index.js"
+    "index.js",
+    "moment.js",
+    "useful-date.js"
   ],
   "version": "0.0.2"
 }

@@ -1,4 +1,6 @@
-	Schema.Date            = {
+	var moment = require( 'moment' );
+
+	module.exports = {
 		clone   : function( date ) {
 			return moment( date ).clone().toDate();
 		},
@@ -9,3 +11,4 @@
 			return moment( date ).format( format );
 		}
 	};
+
