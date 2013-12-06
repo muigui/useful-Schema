@@ -20,7 +20,7 @@
 			while ( ++i < l )
 				data.items[i] = this.coerceItem( data.items[i], loose );
 
-			return data;
+			return this.finalize( data );
 		},
 		coerceItem     : function( raw, loose ) {
 			var data = this.createRootItem(), property;
@@ -34,6 +34,12 @@
 				}
 			}
 
+			return this.finalizeItem( data );
+		},
+		finalize       : function( data ) {
+			return data;
+		},
+		finalizeItem   : function( data ) {
 			return data;
 		},
 		getItemRoot    : function( raw ) {
