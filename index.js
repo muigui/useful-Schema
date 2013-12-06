@@ -358,7 +358,7 @@
 
 	Property.DATA_TYPE     = { // todo: these may need a lil' more work
 		array      : function( v ) {
-			if ( this.schema )
+			if ( this.strict && this.schema )
 				return this.schema.coerce( v ).items || [];
 
 			if ( v === null || v === UNDEF )
@@ -429,7 +429,7 @@
 			return v;
 		},
 		object     : function( v ) {
-			if ( this.schema )
+			if ( this.strict && this.schema )
 				return this.schema.coerceItem( v );
 
 			return v === UNDEF ? this.default : v;
