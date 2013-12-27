@@ -41,11 +41,14 @@
 		}
 
 		if ( properties && typeof properties == 'object' ) {
-			instance.properties = has_config
-								? copy.update( config.properties || [], properties )
-								: copy.update( properties );
-
-			!has_config || delete config.properties;
+			if ( has_config ) { 
+				if ( Array.isArray( config.properties ) )
+					config.overwrites = properties;
+				else
+					delete config.properties;
+			}
+			else
+				instance.properties = copy.update( properties );
 		}
 
 		return copy( instance, config );

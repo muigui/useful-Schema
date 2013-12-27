@@ -3,6 +3,9 @@
 		constructor    : function Schema( config ) {
 			this.initCoerceRoot( this.coerceRoot );
 			this.initProperties( this.properties );
+			this.initOverwrites( this.overwrites );
+
+			delete this.overwrites;
 		},
 
 // instance configuration properties
@@ -131,5 +134,20 @@
 			this.property   = Object.create( null );
 
 			properties.forEach( this.addProperty, this );
+		},
+		initOverwrites : function( overwrites ) {
+			if ( !Array.isArray( overwrites ) ) 
+				return;
+
+			var i = -1, l = overwrites.length, property;
+
+			while ( ++i < l ) {
+				property = overwrites[i];
+
+				if ( property.id in this.property )
+					copy.merge( this.property[property.id], property );
+				else
+					this.addProperty( property );
+			}
 		}
 	} );
