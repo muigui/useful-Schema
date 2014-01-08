@@ -456,7 +456,7 @@
 			return v;
 		},
 		object     : function( v ) {
-			if ( this.strict && this.schema )
+			if ( this.schema && v && typeof v === 'object' )
 				return this.schema.coerceItem( v );
 
 			return v === UNDEF ? this.default : v;
